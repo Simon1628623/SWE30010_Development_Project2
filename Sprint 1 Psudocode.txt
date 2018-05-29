@@ -1,0 +1,77 @@
+MainMenu
+	All methods: when submit button is clicked, execute method with parameters from interface.
+
+MainManager
+	Constructor
+		DataManager Data = new DataManager();
+		Data.OpenAccess();	//Opens access to the database - assuming this will work
+		StockManager Stock = New StockManager (Data.StockIn());
+		StockManager Sales = New SalesManager (Data.SalesIn());
+	Exit
+		Data.Exit()
+		//Also whatever else needs doing on program shutdown.
+
+DataManager
+	OpenAccess()
+		open communication with server. 
+		https://www.codeproject.com/Articles/823854/How-to-connect-SQL-Database-to-your-Csharp-program
+		Probably something like this: mysqli_connect("host"[,"user ", "password", "database"])
+	CloseAccess()
+		close communication with server.
+		probably something like this: mysqli_close($dbconnect);
+
+	StockIn(): List<StockType>
+		Pull stock data from server
+		Populate list of stock objects with data
+		Return List
+
+	SalesIn(): List<Sales>
+		Pull stock data from server
+		Populate list of stock objects with data
+	Return List
+
+	PassCommand(command:String):Bool
+		Pass the command string to the server.
+	PassCommand(command:String):Bool
+		TODO
+	DataManager(user, pass, addr, salesDb, stockDb)
+		username = user;
+		password = pass;
+		address = adr
+		sales_db = salesDb
+		stock_db = stockDb
+
+StockManager
+	AddStock(ItemName, ItemType: string DataManager: Data)
+		string command = "INSERT INTO " 	+ Data.stockTbl + 	"(item_name, item_type) VALUES ("	+itemName + 	", " 	+ itemType +	 ")"
+		If(findCatagory(itemType))
+			if Data.PassCommand(Data.StockDB, command)
+				stock.Add (new StockItem(itemName, ItemType))
+				return true
+		return false
+
+	FindType(type: string):bool
+		for each string s in categories
+			if  type  = s
+				return true
+		return false
+
+	StockManager(stockIn: List<<stockType>>)
+		stock = stockIn;
+		categories.add(/*INSERT CATAGORY HERE*/)	//Repeat for all categories
+
+SalesManager
+	addSalesRecord(date:int, item:stockItem, quantity: int, Data:DataManager)
+		string command = "INSERT INTO " 	+ Data.salesTbl 	+"(date, item, quantity) VALUES ("	+date + 	", " 	+ stockItem.name +", "	+	quantity	+ ")"
+	if Data.PassCommand(Data.StockDB, command)
+		sales_records.add(new SalesRecord(date, item, quantity))
+		return true;
+	return false
+	EditSalesRecord(SalesRecords, DataManager)
+		TODO
+		Same as above, but editing sales record
+	DeleteSalesRecord(SalesRecords, DataManager)
+		TODO
+		Same as above, but deleting sales record
+	SalesManager(salesIn: List<<stockType>>)
+		sales = salesIn
